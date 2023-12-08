@@ -45,7 +45,7 @@ namespace SecretSanta.Services
             var secretSantaNameAsImage = DrawText(friend.SecretSanta!.Name, GetFont(FontFamily.GenericSansSerif), Color.Black, Color.FromArgb(188, 233, 226));
 
             AddImageToEmail(newMail, secretSantaNameAsImage);
-            AddAttachment(newMail, friend.Name);
+            AddAttachment(newMail, friend.SecretSanta!.Name);
 
             //newMail.Body = htmlBody;
 
