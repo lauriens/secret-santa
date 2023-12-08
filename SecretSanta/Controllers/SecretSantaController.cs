@@ -13,8 +13,8 @@ namespace SecretSanta.Controllers
         private readonly IEmailService emailService;
 
         public SecretSantaController(
-            ILogger<SecretSantaController> logger, 
-            ISecretSantaService secretSantaService, 
+            ILogger<SecretSantaController> logger,
+            ISecretSantaService secretSantaService,
             IEmailService emailService)
         {
             this.logger = logger;
@@ -23,20 +23,23 @@ namespace SecretSanta.Controllers
         }
 
         [HttpPost("draw")]
-        public async Task DrawSecretSanta([FromBody] IList<Friend> friends)
+        public async Task<IActionResult> DrawSecretSanta([FromBody] IList<Friend> friends)
         {
             logger.LogInformation("Received request for Draw Secret Santa");
+
+            if (!ModelState.IsValid)
+            {
+                return UnprocessableEntity(ModelState);
+            }
+
             var shuffleResult = secretSantaService.DrawSecretSata(friends);
 
-            ParallelOptions parallelOptions = new()
-            {
-                MaxDegreeOfParallelism = 10
-            };
-
-            await Parallel.ForEachAsync(shuffleResult, parallelOptions, async (friend, cancelationToken) =>
+            foreach (var friend in shuffleResult)
             {
                 await emailService.SendEmail(friend);
-            });
+            }
+
+            return Ok();
         }
     }
 }

@@ -1,4 +1,3 @@
-using Microsoft.Extensions.DependencyInjection;
 using SecretSanta.Extensions;
 using SecretSanta.Options;
 
@@ -13,6 +12,7 @@ builder.Services.AddOptions<MailClientOptions>().Bind(builder.Configuration.GetS
 
 builder.Services.AddControllers();
 builder.Services.AddServices();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

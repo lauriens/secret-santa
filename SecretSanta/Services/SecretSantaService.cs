@@ -1,4 +1,5 @@
-﻿using SecretSanta.Models;
+﻿using SecretSanta.Exceptions;
+using SecretSanta.Models;
 
 namespace SecretSanta.Services
 {
@@ -19,6 +20,8 @@ namespace SecretSanta.Services
         public IEnumerable<Friend> DrawSecretSata(IList<Friend> friends)
         {
             logger.LogInformation("Starting shuffle process");
+
+            ValidateNumberOfFriends(friends);
 
             Random randNumber = new();
 
@@ -51,6 +54,12 @@ namespace SecretSanta.Services
             logger.LogInformation("Suffle process ended");
 
             return friends;
+        }
+
+        private static void ValidateNumberOfFriends(ICollection<Friend> friends)
+        {
+            if (friends.Count < 3)
+                throw new InvalidParticipantsCountException();
         }
     }
 }
